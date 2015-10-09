@@ -7,8 +7,8 @@ import com.mposluszny.jdbc.Player;
 public interface PlayerDao {
 
 	public List<Player> getAllPlayers();
-	public void updatePlayer(long idPlayer, String name, String surname, String ign, boolean isRetired);
-	public void addPlayer(String name, String surname, String ign, boolean isRetired);
-	public void deletePlayer(long idPlayer);
-	public void deletePlayer(String ign);
+	public Player getPlayerById (long idPlayer);
+	public void updatePlayer(Player player);
+	public void addPlayer(Player player);
+	public void deletePlayer(Player player);
 }

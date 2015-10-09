@@ -11,26 +11,25 @@ public class PlayerDaoImpl implements PlayerDao {
 		return null;
 	}
 
-	public void updatePlayer(long idPlayer, String name, String surname, String ign, boolean isRetired) {
+	public Player getPlayerById(long idPlayer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void updatePlayer(Player player) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void addPlayer(String name, String surname, String ign, boolean isRetired) {
+	public void addPlayer(Player player) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void deletePlayer(long idPlayer) {
+	public void deletePlayer(Player player) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void deletePlayer(String ign) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
 
 }
