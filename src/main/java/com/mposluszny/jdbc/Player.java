@@ -12,8 +12,17 @@ public class Player implements Serializable {
 	private long idPlayer;
 	private String name;
 	private String surname;
-	private String Ign;
+	private String ign;
 	private boolean isRetired;
+	
+	public Player(long idPlayer, String name, String surname, String ign, boolean isRetired) {
+		
+		this.idPlayer = idPlayer;
+		this.name = name;
+		this.surname = surname;
+		this.ign = ign;
+		this.isRetired = isRetired;
+	}
 	
 	public long getIdPlayer() {
 		return idPlayer;
@@ -33,11 +42,11 @@ public class Player implements Serializable {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public String getIgn() {
-		return Ign;
+	public String getign() {
+		return ign;
 	}
-	public void setIgn(String ign) {
-		Ign = ign;
+	public void setign(String ign) {
+		this.ign = ign;
 	}
 	public boolean isRetired() {
 		return isRetired;
