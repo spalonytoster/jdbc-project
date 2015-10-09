@@ -1,0 +1,48 @@
+package com.mposluszny.jdbc;
+
+import java.io.Serializable;
+
+public class Player implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8375350038372997692L;
+
+	private long idPlayer;
+	private String name;
+	private String surname;
+	private String Ign;
+	private boolean isRetired;
+	
+	public long getIdPlayer() {
+		return idPlayer;
+	}
+	public void setIdPlayer(long idPlayer) {
+		this.idPlayer = idPlayer;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getSurname() {
+		return surname;
+	}
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+	public String getIgn() {
+		return Ign;
+	}
+	public void setIgn(String ign) {
+		Ign = ign;
+	}
+	public boolean isRetired() {
+		return isRetired;
+	}
+	public void setRetired(boolean isRetired) {
+		this.isRetired = isRetired;
+	}
+}
