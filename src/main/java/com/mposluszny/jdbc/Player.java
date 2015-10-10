@@ -42,10 +42,10 @@ public class Player implements Serializable {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public String getign() {
+	public String getIgn() {
 		return ign;
 	}
-	public void setign(String ign) {
+	public void setIgn(String ign) {
 		this.ign = ign;
 	}
 	public boolean isRetired() {
