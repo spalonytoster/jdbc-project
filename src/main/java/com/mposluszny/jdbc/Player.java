@@ -13,14 +13,16 @@ public class Player implements Serializable {
 	private String name;
 	private String surname;
 	private String ign;
+	private long idTeam;
 	private boolean isRetired;
 	
-	public Player(long idPlayer, String name, String surname, String ign, boolean isRetired) {
+	public Player(long idPlayer, String name, String surname, String ign, long idTeam, boolean isRetired) {
 		
 		this.idPlayer = idPlayer;
 		this.name = name;
 		this.surname = surname;
 		this.ign = ign;
+		this.idTeam = idPlayer;
 		this.isRetired = isRetired;
 	}
 	
@@ -53,5 +55,11 @@ public class Player implements Serializable {
 	}
 	public void setRetired(boolean isRetired) {
 		this.isRetired = isRetired;
+	}
+	public long getIdTeam() {
+		return idTeam;
+	}
+	public void setIdTeam(long idTeam) {
+		this.idTeam = idTeam;
 	}
 }
