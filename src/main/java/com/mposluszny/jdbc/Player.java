@@ -2,6 +2,8 @@ package com.mposluszny.jdbc;
 
 import java.io.Serializable;
 
+import com.mposluszny.jdbc.dao.TeamDaoImpl;
+
 public class Player implements Serializable {
 
 	/**
@@ -16,13 +18,21 @@ public class Player implements Serializable {
 	private long idTeam;
 	private boolean isRetired;
 	
-	public Player(long idPlayer, String name, String surname, String ign, long idTeam, boolean isRetired) {
+	public Player(String name, String surname, String ign, long idTeam, boolean isRetired) {
 		
-		this.idPlayer = idPlayer;
 		this.name = name;
 		this.surname = surname;
 		this.ign = ign;
-		this.idTeam = idPlayer;
+		this.idTeam = idTeam;
+		this.isRetired = isRetired;
+	}
+	
+	public Player(String name, String surname, String ign, String teamName, boolean isRetired) {
+		
+		this.name = name;
+		this.surname = surname;
+		this.ign = ign;
+		this.idTeam = new TeamDaoImpl().getTeamByName(teamName).getIdTeam();
 		this.isRetired = isRetired;
 	}
 	

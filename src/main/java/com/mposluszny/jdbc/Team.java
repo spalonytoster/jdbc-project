@@ -13,9 +13,8 @@ public class Team implements Serializable {
 	private String region;
 	private String dateOfEstablishment;
 	
-	public Team (long idTeam, String name, String region, String dateOfEstablishment) {
+	public Team (String name, String region, String dateOfEstablishment) {
 		
-		this.idTeam = idTeam;
 		this.name = name;
 		this.region = region;
 		this.dateOfEstablishment = dateOfEstablishment;
