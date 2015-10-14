@@ -9,11 +9,11 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.mposluszny.jdbc.Player;
+import com.mposluszny.jdbc.model.Player;
 
 public class PlayerDaoImpl implements PlayerDao {
 
-	private final String URL = "jdbc:hsqldb:mem/esportplayersdb";
+	private final String URL = "jdbc:hsqldb:hsql://localhost/";
 	private final String USERNAME = "SA";
 	private final String PASSWORD = "";
 	
@@ -222,7 +222,7 @@ public class PlayerDaoImpl implements PlayerDao {
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			preparedStatement = 
 					connection.prepareStatement(String.format("INSERT INTO Player (\"NAME\", \"SURNAME\", \"IGN\", \"IDTEAM\", \"ISRETIRED\")"
-																+ "VALUES (%s, %s, %s, %i, %b);", player.getName(), player.getSurname(),
+																+ "VALUES (\'%s\', \'%s\', \'%s\', %d, %b);", player.getName(), player.getSurname(),
 																player.getIgn(), player.getIdPlayer(), player.isRetired()));
 			preparedStatement.execute();
 			
@@ -260,7 +260,7 @@ public class PlayerDaoImpl implements PlayerDao {
 		try {
 			
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			preparedStatement = connection.prepareStatement(String.format("DELETE FROM Player WHERE idPlayer=%i", player.getIdPlayer()));
+			preparedStatement = connection.prepareStatement(String.format("DELETE FROM Player WHERE idPlayer=%d", player.getIdPlayer()));
 			preparedStatement.execute();
 			
 		} catch (SQLException e) {

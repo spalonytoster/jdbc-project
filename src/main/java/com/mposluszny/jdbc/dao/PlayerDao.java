@@ -2,7 +2,7 @@ package com.mposluszny.jdbc.dao;
 
 import java.util.List;
 
-import com.mposluszny.jdbc.Player;
+import com.mposluszny.jdbc.model.Player;
 
 public interface PlayerDao {
 

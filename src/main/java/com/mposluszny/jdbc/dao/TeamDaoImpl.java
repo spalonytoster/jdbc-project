@@ -9,11 +9,11 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.mposluszny.jdbc.Team;
+import com.mposluszny.jdbc.model.Team;
 
 public class TeamDaoImpl implements TeamDao {
 	
-	private final String URL = "jdbc:hsqldb:mem/esportTeamsdb";
+	private final String URL = "jdbc:hsqldb:hsql://localhost/";
 	private final String USERNAME = "SA";
 	private final String PASSWORD = "";
 	
@@ -175,7 +175,7 @@ public class TeamDaoImpl implements TeamDao {
 			
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
-			rs = statement.executeQuery("SELECT * FROM Team WHERE name=" + name + ";");
+			rs = statement.executeQuery("SELECT * FROM Team WHERE name=\'" + name + "\';");
 		
 			if (rs.next())
 				return new Team(rs.getString("name"),
@@ -258,8 +258,7 @@ public class TeamDaoImpl implements TeamDao {
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			statement.executeUpdate(String.format("INSERT INTO Team (\"NAME\", \"REGION\", \"DATEOFESTABLISHMENT\")"
-					+ "VALUES (%s, %s, %s);", team.getName(), team.getRegion(),
-					team.getDateOfEstablishment())); 
+					+ " VALUES (\'%s\', \'%s\', \'%s\');", team.getName(), team.getRegion(), team.getDateOfEstablishment())); 
 			
 		} catch (SQLException e) {
 
@@ -294,7 +293,7 @@ public class TeamDaoImpl implements TeamDao {
 		try {
 			
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			preparedStatement = connection.prepareStatement(String.format("DELETE FROM Team WHERE idTeam=%i", team.getIdTeam()));
+			preparedStatement = connection.prepareStatement(String.format("DELETE FROM Team WHERE idTeam=%d", team.getIdTeam()));
 			preparedStatement.execute();
 			
 		} catch (SQLException e) {

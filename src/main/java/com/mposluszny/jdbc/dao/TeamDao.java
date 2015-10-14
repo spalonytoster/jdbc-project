@@ -2,7 +2,7 @@ package com.mposluszny.jdbc.dao;
 
 import java.util.List;
 
-import com.mposluszny.jdbc.Team;
+import com.mposluszny.jdbc.model.Team;
 
 public interface TeamDao {
 

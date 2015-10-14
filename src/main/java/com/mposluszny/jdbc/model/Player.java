@@ -1,15 +1,8 @@
-package com.mposluszny.jdbc;
-
-import java.io.Serializable;
+package com.mposluszny.jdbc.model;
 
 import com.mposluszny.jdbc.dao.TeamDaoImpl;
 
-public class Player implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8375350038372997692L;
+public class Player {
 
 	private long idPlayer;
 	private String name;
