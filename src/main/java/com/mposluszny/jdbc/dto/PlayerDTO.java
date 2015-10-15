@@ -1,17 +1,32 @@
 package com.mposluszny.jdbc.dto;
 
-public class PlayerDTO {
+import java.io.Serializable;
 
-	// 
-	private long idPlayer;
-	private String name;
-	private String surname;
-	private String ign;
-	private long idTeam;
-	private boolean isRetired;
+import com.mposluszny.jdbc.model.Player;
+import com.mposluszny.jdbc.model.Team;
+
+public class PlayerDTO implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8763948645650962807L;
+	private Player player;
+	private Team team;
 	
-	private long idTeam;
-	private String name;
-	private String region;
-	private String dateOfEstablishment;
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
+	public Team getTeam() {
+		return team;
+	}
+	
+	public void setTeam(Team team) {
+		this.team = team;
+	}
 }
