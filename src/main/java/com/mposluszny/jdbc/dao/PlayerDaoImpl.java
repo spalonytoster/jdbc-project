@@ -44,7 +44,7 @@ public class PlayerDaoImpl implements PlayerDao {
 																+ " name VARCHAR (30) NOT NULL,"
 																+ " surname VARCHAR(50) NOT NULL,"
 																+ " ign VARCHAR(30) NOT NULL,"
-																+ " idTeam BIGINT FOREIGN KEY REFERENCES Team(idTeam) NOT NULL,"
+																+ " idTeam BIGINT FOREIGN KEY REFERENCES Team(idTeam),"
 																+ " isRetired BOOLEAN DEFAULT FALSE);");
 				preparedStatement.execute();
 			}
@@ -92,6 +92,7 @@ public class PlayerDaoImpl implements PlayerDao {
 				players.add(new Player(rs.getString("name"),
 									   rs.getString("surname"),
 									   rs.getString("ign"),
+									   rs.getString("role"),
 									   rs.getLong("idTeam"),
 									   rs.getBoolean("isRetired")));
 			}
@@ -141,6 +142,7 @@ public class PlayerDaoImpl implements PlayerDao {
 				return new Player(rs.getString("name"),
 							      rs.getString("surname"),
 							      rs.getString("ign"),
+							      rs.getString("role"),
 							      rs.getLong("idTeam"),
 							      rs.getBoolean("isRetired"));
 			
@@ -183,6 +185,7 @@ public class PlayerDaoImpl implements PlayerDao {
 											"UPDATE Player SET name=\'" + player.getName() + "\'" +
 															  "surname=\'" + player.getSurname() + "\'" +
 															  "ign=\'" + player.getIgn() + "\'" +
+															  "role=\'" + player.getRole() + "\'" +
 															  "idTeam\'" + player.getIdTeam() + "\'" +
 															  "isRetired=\'" + player.isRetired() + "\'" +
 															  "WHERE idPlayer=" + player.getIdPlayer() + ";");
@@ -221,9 +224,9 @@ public class PlayerDaoImpl implements PlayerDao {
 			
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			preparedStatement = 
-					connection.prepareStatement(String.format("INSERT INTO Player (\"NAME\", \"SURNAME\", \"IGN\", \"IDTEAM\", \"ISRETIRED\")"
-																+ "VALUES (\'%s\', \'%s\', \'%s\', %d, %b);", player.getName(), player.getSurname(),
-																player.getIgn(), player.getIdPlayer(), player.isRetired()));
+					connection.prepareStatement(String.format("INSERT INTO Player (\"NAME\", \"SURNAME\", \"IGN\", \"ROLE\", \"IDTEAM\", \"ISRETIRED\")"
+																+ "VALUES (\'%s\', \'%s\', \'%s\', \'%s\', %s, %b);", player.getName(), player.getSurname(),
+																player.getIgn(), player.getRole(), (player.getIdTeam() == 0L ? "null" : String.valueOf(player.getIdTeam())), player.isRetired()));
 			preparedStatement.execute();
 			
 		} catch (SQLException e) {
