@@ -1,6 +1,6 @@
 package com.mposluszny.jdbc.dao;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -17,10 +17,12 @@ public class PlayerDaoTest {
 		teamDaoImpl.addTeam(new Team("CLG", "NA", "2012-10-10"));
 		teamDaoImpl.addTeam(new Team("TSM", "NA", "2011-10-10"));
 		
+		int size = playerDaoImpl.getAllPlayers().size();
+		
 		Player player = new Player("Peter", "Peng", "Doublelift", "ADC", teamDaoImpl.getTeamByName("TSM").getIdTeam(), false);
 		playerDaoImpl.addPlayer(player);
-		
-		assertNotNull(playerDaoImpl.getPlayerById(player.getIdPlayer()));
+
+		assertTrue(playerDaoImpl.getAllPlayers().size() == size+1);
 	}
 	
 

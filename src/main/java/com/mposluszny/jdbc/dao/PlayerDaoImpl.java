@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mposluszny.jdbc.model.Player;
@@ -76,6 +76,7 @@ public class PlayerDaoImpl implements PlayerDao {
 		}
 	}
 	
+	@Override
 	public List<Player> getAllPlayers() {
 		
 		Connection connection = null;
@@ -87,7 +88,7 @@ public class PlayerDaoImpl implements PlayerDao {
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT * FROM Player;");
-			List<Player> players = new LinkedList<Player>();
+			List<Player> players = new ArrayList<Player>();
 			
 			while (rs.next()) {
 				
@@ -130,6 +131,7 @@ public class PlayerDaoImpl implements PlayerDao {
 		return null;
 	}
 
+	@Override
 	public Player getPlayerById(long idPlayer) {
 				
 		Connection connection = null;
@@ -182,6 +184,7 @@ public class PlayerDaoImpl implements PlayerDao {
 		return null;
 	}
 
+	@Override
 	public void updatePlayer(Player player) {
 
 		Connection connection = null;
@@ -224,6 +227,7 @@ public class PlayerDaoImpl implements PlayerDao {
 
 	}
 
+	@Override
 	public void addPlayer(Player player) {
 
 		Connection connection = null;
@@ -235,7 +239,7 @@ public class PlayerDaoImpl implements PlayerDao {
 			String query = String.format("INSERT INTO Player (NAME, SURNAME, IGN, ROLE, IDTEAM, ISRETIRED)"
 										+ " VALUES (\'%s\', \'%s\', \'%s\', \'%s\', %s, %b);", player.getName(), player.getSurname(),
 										player.getIgn(), player.getRole(), (player.getIdTeam() == 0L ? "null" : String.valueOf(player.getIdTeam())), player.isRetired());
-			System.out.println(query);
+			//System.out.println(query);
 			preparedStatement = 
 					connection.prepareStatement(query);
 			preparedStatement.execute();
@@ -266,6 +270,7 @@ public class PlayerDaoImpl implements PlayerDao {
 	}
 	
 
+	@Override
 	public void deletePlayer(Player player) {
 
 		Connection connection = null;

@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mposluszny.jdbc.model.Team;
@@ -71,6 +71,7 @@ public class TeamDaoImpl implements TeamDao {
 		}
 	}
 
+	@Override
 	public List<Team> getAllTeams() {
 
 		Connection connection = null;
@@ -82,7 +83,7 @@ public class TeamDaoImpl implements TeamDao {
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT * FROM Team;");
-			List<Team> Teams = new LinkedList<Team>();
+			List<Team> Teams = new ArrayList<Team>();
 			
 			while (rs.next()) {
 				
@@ -123,6 +124,7 @@ public class TeamDaoImpl implements TeamDao {
 		return null;
 	}
 
+	@Override
 	public Team getTeamById(long idTeam) {
 
 		Connection connection = null;
@@ -172,6 +174,7 @@ public class TeamDaoImpl implements TeamDao {
 		return null;
 	}
 
+	@Override
 	public Team getTeamByName(String name) {
 
 		Connection connection = null;
@@ -221,6 +224,7 @@ public class TeamDaoImpl implements TeamDao {
 		return null;
 	}
 
+	@Override
 	public void updateTeam(Team team) {
 
 		Connection connection = null;
@@ -260,6 +264,7 @@ public class TeamDaoImpl implements TeamDao {
 		
 	}
 
+	@Override
 	public void addTeam(Team team) {
 		
 		Connection connection = null;
@@ -297,6 +302,7 @@ public class TeamDaoImpl implements TeamDao {
 		
 	}
 
+	@Override
 	public void deleteTeam(Team team) {
 		
 		Connection connection = null;
