@@ -22,11 +22,12 @@ public class Player {
 		this.isRetired = isRetired;
 	}
 	
-	public Player(String name, String surname, String ign, String teamName, boolean isRetired) {
+	public Player(String name, String surname, String ign, String role, String teamName, boolean isRetired) {
 		
 		this.name = name;
 		this.surname = surname;
 		this.ign = ign;
+		this.role = role;
 		this.idTeam = new TeamDaoImpl().getTeamByName(teamName).getIdTeam();
 		this.isRetired = isRetired;
 	}
