@@ -1,7 +1,6 @@
 package com.mposluszny.jdbc.dao.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,28 +13,22 @@ import com.mposluszny.jdbc.dao.PlayerDao;
 import com.mposluszny.jdbc.model.Player;
 
 public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
-
-	private final String URL = "jdbc:hsqldb:hsql://localhost/";
-	private final String USERNAME = "mposluszny";
-	private final String PASSWORD = "admin";
 	
-	public PlayerDaoImpl () {
+	public PlayerDaoImpl (Connection connection) {
 				
-		Connection connection = null;
+		super(connection, "Player");
 		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
-		String query;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			rs = connection.getMetaData().getTables(null, null, null, null);
 			
 			boolean tableExists = false;
 			
 			while (rs.next()) {
 				
-				if ("Player".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+				if (tableName.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
 					tableExists = true;
 					break;
 				}
@@ -68,9 +61,6 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 				if (preparedStatement != null)
 					preparedStatement.close();
 				
-				if(connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 
 				e.printStackTrace();
@@ -81,13 +71,11 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 	@Override
 	public List<Player> getAllPlayers() {
 		
-		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT * FROM Player;");
 			List<Player> players = new ArrayList<Player>();
@@ -121,9 +109,6 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 				if (rs != null)
 					rs.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
@@ -136,13 +121,11 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 	@Override
 	public Player getPlayerById(long idPlayer) {
 				
-		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT * FROM Player WHERE idPlayer=" + idPlayer + ";");
 		
@@ -174,9 +157,6 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 				if (statement != null)
 					statement.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
@@ -189,12 +169,10 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 	@Override
 	public void updatePlayer(Player player) {
 
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			preparedStatement = connection.prepareStatement(
 											"UPDATE Player SET name=\'" + player.getName() + "\'" +
 															  "surname=\'" + player.getSurname() + "\'" +
@@ -217,9 +195,6 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 				if (preparedStatement != null)
 					preparedStatement.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 
 				e.printStackTrace();
@@ -232,16 +207,13 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 	@Override
 	public void addPlayer(Player player) {
 
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			String query = String.format("INSERT INTO Player (NAME, SURNAME, IGN, ROLE, IDTEAM, ISRETIRED)"
 										+ " VALUES (\'%s\', \'%s\', \'%s\', \'%s\', %s, %b);", player.getName(), player.getSurname(),
 										player.getIgn(), player.getRole(), (player.getIdTeam() == 0L ? "null" : String.valueOf(player.getIdTeam())), player.isRetired());
-			//System.out.println(query);
 			preparedStatement = 
 					connection.prepareStatement(query);
 			preparedStatement.execute();
@@ -259,9 +231,6 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 				if (preparedStatement != null)
 					preparedStatement.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 
 				e.printStackTrace();
@@ -275,12 +244,10 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 	@Override
 	public void deletePlayer(Player player) {
 
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			preparedStatement = connection.prepareStatement(String.format("DELETE FROM Player WHERE idPlayer=%d", player.getIdPlayer()));
 			preparedStatement.execute();
 			
@@ -296,9 +263,6 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 				
 				if (preparedStatement != null)
 					preparedStatement.close();
-				
-				if (connection != null)
-					connection.close();
 				
 			} catch (SQLException e) {
 

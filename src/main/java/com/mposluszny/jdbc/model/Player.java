@@ -28,7 +28,6 @@ public class Player {
 		this.surname = surname;
 		this.ign = ign;
 		this.role = role;
-		this.idTeam = new TeamDaoImpl().getTeamByName(teamName).getIdTeam();
 		this.isRetired = isRetired;
 	}
 	

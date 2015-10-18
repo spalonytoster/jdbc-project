@@ -9,24 +9,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mposluszny.jdbc.dao.GenericDAO;
 import com.mposluszny.jdbc.dao.TeamDao;
 import com.mposluszny.jdbc.model.Team;
 
-public class TeamDaoImpl implements TeamDao {
+public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 	
-	private final String URL = "jdbc:hsqldb:hsql://localhost/";
-	private final String USERNAME = "mposluszny";
-	private final String PASSWORD = "admin";
-	
-	public TeamDaoImpl () {
+	public TeamDaoImpl (Connection connection) {
 		
-		Connection connection = null;
+		super(connection, "Team");
 		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			rs = connection.getMetaData().getTables(null, null, null, null);
 			
 			boolean tableExists = false;
@@ -62,9 +58,6 @@ public class TeamDaoImpl implements TeamDao {
 				if (preparedStatement != null)
 					preparedStatement.close();
 				
-				if(connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 
 				e.printStackTrace();
@@ -75,13 +68,11 @@ public class TeamDaoImpl implements TeamDao {
 	@Override
 	public List<Team> getAllTeams() {
 
-		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs = null;
 		
 			try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT * FROM Team;");
 			List<Team> Teams = new ArrayList<Team>();
@@ -113,9 +104,6 @@ public class TeamDaoImpl implements TeamDao {
 				if (rs != null)
 					rs.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
@@ -128,13 +116,11 @@ public class TeamDaoImpl implements TeamDao {
 	@Override
 	public Team getTeamById(long idTeam) {
 
-		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT * FROM Team WHERE idTeam=" + idTeam + ";");
 		
@@ -163,9 +149,6 @@ public class TeamDaoImpl implements TeamDao {
 				if (statement != null)
 					statement.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
@@ -178,13 +161,11 @@ public class TeamDaoImpl implements TeamDao {
 	@Override
 	public Team getTeamByName(String name) {
 
-		Connection connection = null;
 		Statement statement = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			rs = statement.executeQuery("SELECT * FROM Team WHERE name=\'" + name + "\';");
 		
@@ -213,9 +194,6 @@ public class TeamDaoImpl implements TeamDao {
 				if (statement != null)
 					statement.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
@@ -228,12 +206,10 @@ public class TeamDaoImpl implements TeamDao {
 	@Override
 	public void updateTeam(Team team) {
 
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			preparedStatement = connection.prepareStatement(
 											"UPDATE Team SET name=\'" + team.getName() + "\'" +
 															  "region=\'" + team.getRegion() + "\'" +
@@ -253,9 +229,6 @@ public class TeamDaoImpl implements TeamDao {
 				if (preparedStatement != null)
 					preparedStatement.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 
 				e.printStackTrace();
@@ -268,12 +241,10 @@ public class TeamDaoImpl implements TeamDao {
 	@Override
 	public void addTeam(Team team) {
 		
-		Connection connection = null;
 		Statement statement = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			statement = connection.createStatement();
 			statement.executeUpdate(String.format("INSERT INTO Team (NAME, REGION, DATEOFESTABLISHMENT)"
 					+ " VALUES (\'%s\', \'%s\', \'%s\');", team.getName(), team.getRegion(), team.getDateOfEstablishment())); 
@@ -291,9 +262,6 @@ public class TeamDaoImpl implements TeamDao {
 				if (statement != null)
 					statement.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 
 				e.printStackTrace();
@@ -306,12 +274,10 @@ public class TeamDaoImpl implements TeamDao {
 	@Override
 	public void deleteTeam(Team team) {
 		
-		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
 		try {
 			
-			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			preparedStatement = connection.prepareStatement(String.format("DELETE FROM Team WHERE idTeam=%d", team.getIdTeam()));
 			preparedStatement.execute();
 			
@@ -328,9 +294,6 @@ public class TeamDaoImpl implements TeamDao {
 				if (preparedStatement != null)
 					preparedStatement.close();
 				
-				if (connection != null)
-					connection.close();
-				
 			} catch (SQLException e) {
 
 				e.printStackTrace();
@@ -338,6 +301,12 @@ public class TeamDaoImpl implements TeamDao {
 			}
 		}
 		
+	}
+
+	@Override
+	public int count() throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
