@@ -1,6 +1,6 @@
 package com.mposluszny.jdbc.model;
 
-import com.mposluszny.jdbc.dao.TeamDaoImpl;
+import com.mposluszny.jdbc.dao.impl.TeamDaoImpl;
 
 public class Player {
 
