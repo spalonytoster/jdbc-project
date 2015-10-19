@@ -8,17 +8,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hsqldb.lib.StringUtil;
+
 import com.mposluszny.jdbc.dao.GenericDAO;
 import com.mposluszny.jdbc.dao.PlayerDao;
 import com.mposluszny.jdbc.model.Player;
 
 public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 	
-	public PlayerDaoImpl (Connection connection) {
+	public PlayerDaoImpl (Connection connection, Statement statement, PreparedStatement preparedStatement, ResultSet rs, String query) {
 				
-		super(connection, "Player");
-		PreparedStatement preparedStatement = null;
-		ResultSet rs = null;
+		super(connection, statement, preparedStatement, rs, query, "Player");
 		
 		try {
 			
@@ -51,28 +51,10 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 			e.printStackTrace();
 		}
 		
-		finally {
-			
-			try {
-				
-				if (rs != null)
-					rs.close();
-				
-				if (preparedStatement != null)
-					preparedStatement.close();
-				
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	@Override
 	public List<Player> getAllPlayers() {
-		
-		Statement statement = null;
-		ResultSet rs = null;
 		
 		try {
 			
@@ -99,30 +81,11 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 			e.printStackTrace();
 		}
 		
-		finally {
-			
-			try {
-
-				if (statement != null)
-					statement.close();
-				
-				if (rs != null)
-					rs.close();
-				
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		
 		return null;
 	}
 
 	@Override
 	public Player getPlayerById(long idPlayer) {
-				
-		Statement statement = null;
-		ResultSet rs = null;
 		
 		try {
 			
@@ -147,29 +110,11 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 			e.printStackTrace();
 		}
 		
-		finally {
-			
-			try {
-				
-				if (rs != null)
-					rs.close();
-				
-				if (statement != null)
-					statement.close();
-				
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		
 		return null;
 	}
 
 	@Override
 	public void updatePlayer(Player player) {
-
-		PreparedStatement preparedStatement = null;
 		
 		try {
 			
@@ -187,33 +132,30 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 			
 			e.printStackTrace();
 		}
-		
-		finally {
-			
-			try {
-				
-				if (preparedStatement != null)
-					preparedStatement.close();
-				
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
-			
-		}
 
 	}
 
 	@Override
 	public void addPlayer(Player player) {
-
-		PreparedStatement preparedStatement = null;
 		
 		try {
 			
-			String query = String.format("INSERT INTO Player (NAME, SURNAME, IGN, ROLE, IDTEAM, ISRETIRED)"
-										+ " VALUES (\'%s\', \'%s\', \'%s\', \'%s\', %s, %b);", player.getName(), player.getSurname(),
-										player.getIgn(), player.getRole(), (player.getIdTeam() == 0L ? "null" : String.valueOf(player.getIdTeam())), player.isRetired());
+			String getIdTeamQuery = "SELECT idTeam FROM Team WHERE name=\'" + player.getTeamName() + "\'";
+			
+			if (!StringUtil.isEmpty(player.getTeamName())) {
+				
+				query = String.format("INSERT INTO Player (NAME, SURNAME, IGN, ROLE, IDTEAM, ISRETIRED)"
+						+ " VALUES (\'%s\', \'%s\', \'%s\', \'%s\', (%s), %b);", player.getName(), player.getSurname(),
+						player.getIgn(), player.getRole(), getIdTeamQuery, player.isRetired());
+			}
+			
+			else {
+				
+				query = String.format("INSERT INTO Player (NAME, SURNAME, IGN, ROLE, IDTEAM, ISRETIRED)"
+						+ " VALUES (\'%s\', \'%s\', \'%s\', \'%s\', %s, %b);", player.getName(), player.getSurname(),
+						player.getIgn(), player.getRole(), (player.getIdTeam() == 0L ? "null" : String.valueOf(player.getIdTeam())), player.isRetired());
+			}
+			
 			preparedStatement = 
 					connection.prepareStatement(query);
 			preparedStatement.execute();
@@ -221,21 +163,6 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-			
-		}
-		
-		finally {
-			
-			try {
-				
-				if (preparedStatement != null)
-					preparedStatement.close();
-				
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-				
-			}
 		}
 		
 	}
@@ -243,8 +170,6 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 
 	@Override
 	public void deletePlayer(Player player) {
-
-		PreparedStatement preparedStatement = null;
 		
 		try {
 			
@@ -254,27 +179,8 @@ public class PlayerDaoImpl extends GenericDAO<Player> implements PlayerDao {
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-			
 		}
 		
-		finally {
-			
-			try {
-				
-				if (preparedStatement != null)
-					preparedStatement.close();
-				
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-				
-			}
-		}
 	}
 
-	@Override
-	public int count() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

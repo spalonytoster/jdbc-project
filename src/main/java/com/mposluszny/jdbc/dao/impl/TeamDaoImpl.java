@@ -1,7 +1,6 @@
 package com.mposluszny.jdbc.dao.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,11 +14,9 @@ import com.mposluszny.jdbc.model.Team;
 
 public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 	
-	public TeamDaoImpl (Connection connection) {
+	public TeamDaoImpl (Connection connection, Statement statement, PreparedStatement preparedStatement, ResultSet rs, String query) {
 		
-		super(connection, "Team");
-		PreparedStatement preparedStatement = null;
-		ResultSet rs = null;
+		super(connection, statement, preparedStatement, rs, query, "Team");
 		
 		try {
 			
@@ -43,33 +40,16 @@ public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 																+ " dateOfEstablishment DATE);");
 				preparedStatement.execute();
 			}
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
 		
-		finally {
-			
-			try {
-				
-				if (rs != null)
-					rs.close();
-				
-				if (preparedStatement != null)
-					preparedStatement.close();
-				
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override
 	public List<Team> getAllTeams() {
-
-		Statement statement = null;
-		ResultSet rs = null;
 		
 			try {
 			
@@ -86,7 +66,6 @@ public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 				Teams.add(team);
 			}
 			
-			
 			return Teams;
 			
 		} catch (SQLException e) {
@@ -94,30 +73,11 @@ public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 			e.printStackTrace();
 		}
 		
-		finally {
-			
-			try {
-
-				if (statement != null)
-					statement.close();
-				
-				if (rs != null)
-					rs.close();
-				
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		
 		return null;
 	}
 
 	@Override
 	public Team getTeamById(long idTeam) {
-
-		Statement statement = null;
-		ResultSet rs = null;
 		
 		try {
 			
@@ -139,30 +99,11 @@ public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 			e.printStackTrace();
 		}
 		
-		finally {
-			
-			try {
-				
-				if (rs != null)
-					rs.close();
-				
-				if (statement != null)
-					statement.close();
-				
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		
 		return null;
 	}
 
 	@Override
 	public Team getTeamByName(String name) {
-
-		Statement statement = null;
-		ResultSet rs = null;
 		
 		try {
 			
@@ -184,29 +125,11 @@ public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 			e.printStackTrace();
 		}
 		
-		finally {
-			
-			try {
-				
-				if (rs != null)
-					rs.close();
-				
-				if (statement != null)
-					statement.close();
-				
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		
 		return null;
 	}
 
 	@Override
 	public void updateTeam(Team team) {
-
-		PreparedStatement preparedStatement = null;
 		
 		try {
 			
@@ -222,27 +145,11 @@ public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 			e.printStackTrace();
 		}
 		
-		finally {
-			
-			try {
-				
-				if (preparedStatement != null)
-					preparedStatement.close();
-				
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
-			
-		}
-		
 	}
 
 	@Override
 	public void addTeam(Team team) {
-		
-		Statement statement = null;
-		
+				
 		try {
 			
 			statement = connection.createStatement();
@@ -252,30 +159,13 @@ public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-			
-		}
-		
-		finally {
-			
-			try {
-				
-				if (statement != null)
-					statement.close();
-				
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-				
-			}
 		}
 		
 	}
 
 	@Override
 	public void deleteTeam(Team team) {
-		
-		PreparedStatement preparedStatement = null;
-		
+				
 		try {
 			
 			preparedStatement = connection.prepareStatement(String.format("DELETE FROM Team WHERE idTeam=%d", team.getIdTeam()));
@@ -284,29 +174,8 @@ public class TeamDaoImpl extends GenericDAO<Team> implements TeamDao {
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-			
 		}
 		
-		finally {
-			
-			try {
-				
-				if (preparedStatement != null)
-					preparedStatement.close();
-				
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-				
-			}
-		}
-		
-	}
-
-	@Override
-	public int count() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

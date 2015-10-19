@@ -1,7 +1,5 @@
 package com.mposluszny.jdbc.model;
 
-import com.mposluszny.jdbc.dao.impl.TeamDaoImpl;
-
 public class Player {
 
 	private long idPlayer;
@@ -10,6 +8,7 @@ public class Player {
 	private String ign;
 	private String role;
 	private long idTeam;
+	private String teamName;
 	private boolean isRetired;
 	
 	public Player(String name, String surname, String ign, String role, long idTeam, boolean isRetired) {
@@ -28,6 +27,7 @@ public class Player {
 		this.surname = surname;
 		this.ign = ign;
 		this.role = role;
+		this.setTeamName(teamName);
 		this.isRetired = isRetired;
 	}
 	
@@ -85,6 +85,14 @@ public class Player {
 	
 	public void setRetired(boolean isRetired) {
 		this.isRetired = isRetired;
+	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
 	}
 
 }

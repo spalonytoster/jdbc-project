@@ -2,8 +2,10 @@ package com.mposluszny.jdbc.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 
 import com.mposluszny.jdbc.dao.impl.PlayerDaoImpl;
 import com.mposluszny.jdbc.dao.impl.TeamDaoImpl;
@@ -13,11 +15,16 @@ public class DAOManager {
 	private final String URL = "jdbc:hsqldb:hsql://localhost/";
 	private final String USERNAME = "mposluszny";
 	private final String PASSWORD = "admin";
-	Connection connection;
+	private Connection connection;
+	private Statement statement;
+	private PreparedStatement preparedStatement;
+	private ResultSet rs;
+	private String query;
+	
 	
 	private DAOManager() {
 		
-		
+		// for singleton purpose
 	}
 	
 	public enum Table { PLAYER, TEAM }
@@ -46,9 +53,24 @@ public class DAOManager {
 		
 		try {
 			
-			if (connection != null && !this.connection.isClosed()) {
+			if (this.statement != null && !this.statement.isClosed()) {
 				
-				connection.close();
+				this.statement.close();
+			}
+			
+			if (this.preparedStatement != null && !this.preparedStatement.isClosed()) {
+				
+				this.preparedStatement.close();
+			}
+			
+			if (this.rs != null && this.rs.isClosed()) {
+				
+				this.rs.close();
+			}
+			
+			if (this.connection != null && !this.connection.isClosed()) {
+				
+				this.connection.close();
 			}
 			
 		} catch (SQLException e) {
@@ -108,10 +130,10 @@ public class DAOManager {
 		switch (table) {
 		
 		case PLAYER:
-			return new PlayerDaoImpl(connection);
+			return new PlayerDaoImpl(this.connection, this.statement, this.preparedStatement, this.rs, this.query);
 			
 		case TEAM:
-			return new TeamDaoImpl(connection);
+			return new TeamDaoImpl(this.connection, this.statement, this.preparedStatement, this.rs, this.query);
 			
 		default:
 			throw new SQLException("There's no such table in db as " + table + ".");

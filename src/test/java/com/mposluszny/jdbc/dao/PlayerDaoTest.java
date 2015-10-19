@@ -23,9 +23,16 @@ public class PlayerDaoTest {
 			TeamDaoImpl teamDao = (TeamDaoImpl) daoManager.getDao(Table.TEAM);
 			PlayerDaoImpl playerDao = (PlayerDaoImpl) daoManager.getDao(Table.PLAYER);
 		
+			int teamCount = teamDao.count();
+			int playerCount = playerDao.count();
+			
 			teamDao.addTeam(new Team("TSM", "NA", "2011-10-10"));
-			playerDao.addPlayer(new Player("Peter", "Peng", "Doublelift", "ADC", teamDao.getTeamByName("TSM").getName(), false));
-		
+			playerDao.addPlayer(new Player("Peter", "Peng", "Doublelift", "ADC", "TSM", false));
+			
+			assertTrue(teamDao.count() == teamCount+1);
+			assertTrue(playerDao.count() == playerCount+1);
+			
+			daoManager.close();
 		}
 		
 		catch (SQLException e) {
